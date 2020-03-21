@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:spd/data.dart';
 import 'package:spd/encode/ecodedimg.dart';
-import 'package:spd/img.dart';
 import 'package:toast/toast.dart';
 
 class EncodeIMG extends StatefulWidget {
@@ -43,14 +42,13 @@ class _EncodeIMGState extends State<EncodeIMG> {
               data: {
                 "cover_image": coverImgB64.toString(),
                 "data_to_be_encoded": secretImgB64.toString(),
-                "pwd": password.text
+                "pwd": password.text,
+                "UID": fbuser.uid
               },
               options: Options(contentType: Headers.formUrlEncodedContentType));
       print(response);
       Navigator.of(context).pop();
-      var img = response.data['secret_image_data'];
-      print(img.runtimeType);
-      imgfromres = base64Decode(img);
+      imglink = response.data['secret_image_link'];
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Encoded()),

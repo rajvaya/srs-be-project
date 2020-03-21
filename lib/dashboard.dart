@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:spd/data.dart';
 import 'package:spd/decode/decode_img.dart';
 import 'package:spd/encode/encode_img.dart';
-import 'package:spd/img.dart';
 import 'package:spd/loginpage.dart';
 
 class DashBoard extends StatefulWidget {

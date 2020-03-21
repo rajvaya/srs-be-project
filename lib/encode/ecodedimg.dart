@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:save_in_gallery/save_in_gallery.dart';
+import 'package:flutter/services.dart';
+import 'package:toast/toast.dart';
 
 import '../data.dart';
 
@@ -9,15 +10,6 @@ class Encoded extends StatefulWidget {
 }
 
 class _EncodedState extends State<Encoded> {
-  final _imageSaver = ImageSaver();
-  saveIMG() async {
-    final res = await _imageSaver.saveImage(
-      imageBytes: imgfromres,
-      directoryName: "SPD",
-    );
-    print(res.toString());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,14 +20,16 @@ class _EncodedState extends State<Encoded> {
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height * 0.5,
-            child: Image.memory(imgfromres),
+            child: Image.network(imglink),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.file_download),
+        child: Icon(Icons.content_copy),
         onPressed: () {
-          saveIMG();
+          Clipboard.setData(new ClipboardData(text: imglink));
+          Toast.show("Link Copied to Clipboard", context,
+              duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
         },
       ),
     );
