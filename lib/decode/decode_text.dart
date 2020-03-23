@@ -1,19 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:spd/encode/ecodedimg.dart';
+import 'package:spd/DecodedTEXT.dart';
 import 'package:toast/toast.dart';
 
 import '../data.dart';
 
-class DecodeIMG extends StatefulWidget {
+class DecodeTEXT extends StatefulWidget {
   @override
-  _DecodeIMGState createState() => _DecodeIMGState();
+  _DecodeTEXTState createState() => _DecodeTEXTState();
 }
 
-class _DecodeIMGState extends State<DecodeIMG> {
+class _DecodeTEXTState extends State<DecodeTEXT> {
   File ImageFile;
   String ImgB64;
   TextEditingController password = TextEditingController();
@@ -30,7 +31,7 @@ class _DecodeIMGState extends State<DecodeIMG> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Decode img'),
+        title: Text('Decode Text'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -41,7 +42,7 @@ class _DecodeIMGState extends State<DecodeIMG> {
               child: Center(
                 child: ImageFile == null
                     ? FloatingActionButton.extended(
-                        heroTag: 2,
+                        heroTag: 11,
                         onPressed: () {
                           getImage();
                         },
@@ -76,7 +77,7 @@ class _DecodeIMGState extends State<DecodeIMG> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        heroTag: 4,
+        heroTag: 12,
         onPressed: () {
           if (ImageFile != null && password.text.isNotEmpty) {
             print("ok");
@@ -96,21 +97,21 @@ class _DecodeIMGState extends State<DecodeIMG> {
     _showDialog();
     try {
       Response response =
-          await Dio().post("https://awss3uploader.herokuapp.com/decodeImage",
+          await Dio().post("https://awss3uploader.herokuapp.com/decodeText",
               data: {
                 "secret_image": ImgB64.toString(),
                 "pwd": password.text,
               },
               options: Options(contentType: Headers.formUrlEncodedContentType));
       print(response.data.toString());
-      if (response.data.toString().contains("link")) {
+
+      if (response.data.toString().contains("encoded_data")) {
         print(" in LINK ");
-        imglink = response.data['link'];
-        endeString = "Decoded Image";
+        msg = response.data['encoded_data'];
         Navigator.of(context).pop();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Encoded()),
+          MaterialPageRoute(builder: (context) => DecodedTEXT()),
         );
         Toast.show("Succsefull", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);

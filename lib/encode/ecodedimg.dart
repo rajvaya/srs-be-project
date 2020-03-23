@@ -14,13 +14,27 @@ class _EncodedState extends State<Encoded> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Encoded IMG'),
+        title: Text(endeString),
       ),
       body: Column(
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height * 0.5,
-            child: Image.network(imglink),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Image.network(
+                  imglink,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+              ),
+            ),
           ),
         ],
       ),

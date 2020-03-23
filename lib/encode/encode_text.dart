@@ -1,30 +1,26 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:spd/data.dart';
-import 'package:spd/encode/ecodedimg.dart';
 import 'package:toast/toast.dart';
 
-class EncodeIMG extends StatefulWidget {
+import '../data.dart';
+import 'ecodedimg.dart';
+
+class EncodeTEXT extends StatefulWidget {
   @override
-  _EncodeIMGState createState() => _EncodeIMGState();
+  _EncodeTEXTState createState() => _EncodeTEXTState();
 }
 
-class _EncodeIMGState extends State<EncodeIMG> {
+class _EncodeTEXTState extends State<EncodeTEXT> {
   File coverImage;
-  File secretImage;
-  String secretImgB64;
   String coverImgB64;
   TextEditingController password = TextEditingController();
+  TextEditingController message = TextEditingController();
 
   Future getImage(String imgtype) async {
-    if (imgtype == "s") {
-      secretImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-      secretImgB64 = base64Encode(secretImage.readAsBytesSync());
-      print(secretImgB64);
-    }
     if (imgtype == "c") {
       coverImage = await ImagePicker.pickImage(source: ImageSource.gallery);
       coverImgB64 = base64Encode(coverImage.readAsBytesSync());
@@ -41,7 +37,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
           await Dio().post("https://awss3uploader.herokuapp.com/encode",
               data: {
                 "cover_image": coverImgB64.toString(),
-                "data_to_be_encoded": secretImgB64.toString(),
+                "data_to_be_encoded": message.text.toString(),
                 "pwd": password.text,
                 "UID": fbuser.uid
               },
@@ -57,9 +53,8 @@ class _EncodeIMGState extends State<EncodeIMG> {
     } catch (e) {
       coverImgB64 = null;
       coverImage = null;
-      secretImgB64 = null;
-      secretImgB64 = null;
       password.text = null;
+      message.text = null;
       Toast.show("Something went Wrong Opps Please Try Again", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       Navigator.of(context).pop();
@@ -71,9 +66,9 @@ class _EncodeIMGState extends State<EncodeIMG> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        title: Text('Encode IMG'),
+        title: Text('Encode Text'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -84,7 +79,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
               child: Center(
                 child: coverImage == null
                     ? FloatingActionButton.extended(
-                        heroTag: 2,
+                        heroTag: 10,
                         onPressed: () {
                           getImage("c");
                         },
@@ -98,19 +93,25 @@ class _EncodeIMGState extends State<EncodeIMG> {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.25,
               width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: secretImage == null
-                    ? FloatingActionButton.extended(
-                        heroTag: 3,
-                        onPressed: () {
-                          getImage("s");
-                        },
-                        label: Text('Secret Img'),
-                        icon: Icon(Icons.account_circle),
-                      )
-                    : Image.file(secretImage),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  obscureText: false,
+                  maxLines: 10,
+                  minLines: 1,
+                  cursorColor: Colors.teal,
+                  decoration: InputDecoration(
+                    hintText: "Your Message",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                  ),
+                  controller: message,
+                ),
               ),
             ),
             Container(
@@ -131,7 +132,6 @@ class _EncodeIMGState extends State<EncodeIMG> {
                 controller: password,
               ),
             ),
-            Container(),
           ],
         ),
       ),
@@ -139,12 +139,11 @@ class _EncodeIMGState extends State<EncodeIMG> {
         heroTag: 4,
         onPressed: () {
           if (coverImage != null &&
-              secretImage != null &&
-              password.text.isNotEmpty) {
+              password.text.isNotEmpty &&
+              message.text.isNotEmpty) {
             print("ok");
             encodeCall();
           } else {
-            print("COMPLETE ALL DATA");
             Toast.show("Complete all the Inputs", context,
                 duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
           }
@@ -158,7 +157,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
   void _showDialog() {
     // flutter defined function
     showDialog(
-      barrierDismissible: true,
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog

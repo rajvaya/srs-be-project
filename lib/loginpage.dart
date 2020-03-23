@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:spd/dashboard.dart';
 import 'package:spd/data.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,8 +21,6 @@ class _LoginPageState extends State<LoginPage> {
 
   _signInWithGoogle() async {
     try {
-      var u = await _auth.currentUser();
-      var b = await _googleSignIn.isSignedIn();
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
@@ -31,15 +31,17 @@ class _LoginPageState extends State<LoginPage> {
       final FirebaseUser user =
           (await _auth.signInWithCredential(credential)).user;
       print("LOGGDIN AS : " + user.email.toString());
-      print(user.photoUrl);
-      url = user.photoUrl;
-      email = user.displayName;
       fbuser = user;
-      setState(() {});
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => DashBoard()),
-      );
+      var response = await Dio().post(
+          "https://us-central1-spd-app-7afb5.cloudfunctions.net/addUID",
+          data: {"UID": fbuser.uid},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.data["message"] == "User Added") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashBoard()),
+        );
+      }
     } catch (e) {
       print(e);
     }
@@ -85,8 +87,8 @@ class _LoginPageState extends State<LoginPage> {
             body: Center(
               child: FloatingActionButton.extended(
                 onPressed: _signInWithGoogle,
-                label: Text('Google Signin'),
-                icon: Icon(Icons.account_circle),
+                label: Text('Login With Google'),
+                icon: FaIcon(FontAwesomeIcons.google),
               ),
             ),
           );

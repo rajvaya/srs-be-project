@@ -8,8 +8,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:spd/data.dart';
 import 'package:spd/decode/decode_img.dart';
+import 'package:spd/decode/decode_text.dart';
 import 'package:spd/encode/encode_img.dart';
+import 'package:spd/encode/encode_text.dart';
 import 'package:spd/loginpage.dart';
+
+import 'listofencoded.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -30,48 +34,95 @@ class _DashBoardState extends State<DashBoard> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Center(
-            child: FloatingActionButton.extended(
-              heroTag: 1,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => EncodeIMG()),
-                );
-              },
-              label: Text('Encode Image'),
-              icon: Icon(Icons.add_a_photo),
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: <Widget>[
+                Center(
+                  child: FloatingActionButton.extended(
+                    heroTag: 1,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EncodeIMG()),
+                      );
+                    },
+                    label: Text('Encode Image'),
+                    icon: Icon(Icons.add_a_photo),
+                  ),
+                ),
+                Center(
+                  child: FloatingActionButton.extended(
+                    heroTag: 7,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EncodeTEXT()),
+                      );
+                    },
+                    label: Text('Encode Text'),
+                    icon: Icon(Icons.add_a_photo),
+                  ),
+                ),
+                Center(
+                  child: FloatingActionButton.extended(
+                    heroTag: 6,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DecodeIMG()),
+                      );
+                    },
+                    label: Text('Decode Image'),
+                    icon: Icon(Icons.add_a_photo),
+                  ),
+                ),
+                Center(
+                  child: FloatingActionButton.extended(
+                    heroTag: 8,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DecodeTEXT()),
+                      );
+                    },
+                    label: Text('Decode Text'),
+                    icon: Icon(Icons.add_a_photo),
+                  ),
+                ),
+                Center(
+                  child: FloatingActionButton.extended(
+                    heroTag: 13,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListOfEncoded()),
+                      );
+                    },
+                    label: Text('List of Encoded Image'),
+                    icon: Icon(Icons.add_a_photo),
+                  ),
+                ),
+                Center(
+                  child: FloatingActionButton.extended(
+                    heroTag: 9,
+                    onPressed: () async {
+                      fbuser = null;
+                      await _auth.signOut();
+                      await _googleSignIn.signOut();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },
+                    label: Text('LOG OUT'),
+                    icon: Icon(Icons.add_a_photo),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Center(
-            child: FloatingActionButton.extended(
-              heroTag: 6,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DecodeIMG()),
-                );
-              },
-              label: Text('Decode Image'),
-              icon: Icon(Icons.add_a_photo),
-            ),
-          ),
-          Center(
-            child: FloatingActionButton.extended(
-              heroTag: 7,
-              onPressed: () async {
-                fbuser = null;
-                await _auth.signOut();
-                await _googleSignIn.signOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              label: Text('LOG OUT'),
-              icon: Icon(Icons.add_a_photo),
-            ),
-          ),
+          )
         ],
       ),
     );

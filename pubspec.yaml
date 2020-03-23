@@ -27,8 +27,8 @@ dependencies:
   google_sign_in: ^4.1.4
   image_picker: ^0.6.3+4
   dio: ^3.0.9
+  font_awesome_flutter: ^8.7.0
   toast: ^0.1.5
-  save_in_gallery: ^0.1.3
 
 
 
