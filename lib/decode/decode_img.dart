@@ -29,6 +29,7 @@ class _DecodeIMGState extends State<DecodeIMG> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         title: Text('Decode img'),
       ),

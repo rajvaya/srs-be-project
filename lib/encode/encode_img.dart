@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,6 +32,19 @@ class _EncodeIMGState extends State<EncodeIMG> {
       print(coverImgB64);
     }
     setState(() {});
+  }
+
+  onSubmit() {
+    if (coverImage != null && secretImage != null && password.text.isNotEmpty) {
+      print("ok");
+      FocusScope.of(context).unfocus();
+      encodeCall();
+    } else {
+      FocusScope.of(context).unfocus();
+      print("COMPLETE ALL DATA");
+      Toast.show("Complete all the Inputs", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
   }
 
   encodeCall() async {
@@ -70,8 +84,9 @@ class _EncodeIMGState extends State<EncodeIMG> {
 
   @override
   Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         title: Text('Encode IMG'),
       ),
@@ -119,6 +134,9 @@ class _EncodeIMGState extends State<EncodeIMG> {
               child: TextField(
                 obscureText: true,
                 cursorColor: Colors.teal,
+                onSubmitted: (String s) {
+                  onSubmit();
+                },
                 decoration: InputDecoration(
                   hintText: "Your Secret Key",
                   border: OutlineInputBorder(
@@ -131,27 +149,22 @@ class _EncodeIMGState extends State<EncodeIMG> {
                 controller: password,
               ),
             ),
-            Container(),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.1,
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 4,
-        onPressed: () {
-          if (coverImage != null &&
-              secretImage != null &&
-              password.text.isNotEmpty) {
-            print("ok");
-            encodeCall();
-          } else {
-            print("COMPLETE ALL DATA");
-            Toast.show("Complete all the Inputs", context,
-                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-          }
-        },
-        label: Text('Enocde'),
-        icon: Icon(Icons.account_circle),
-      ),
+      floatingActionButton: showFab
+          ? FloatingActionButton.extended(
+              heroTag: 4,
+              onPressed: () {
+                onSubmit();
+              },
+              label: Text('Enocde'),
+              icon: Icon(Icons.account_circle),
+            )
+          : null,
     );
   }
 
@@ -167,11 +180,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
           content: Wrap(
             children: <Widget>[
               Center(
-                child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(
-                    Colors.blue[300],
-                  ),
-                ),
+                child: CircularProgressIndicator(),
               )
             ],
           ),

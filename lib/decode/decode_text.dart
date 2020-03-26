@@ -30,6 +30,7 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         title: Text('Decode Text'),
       ),
