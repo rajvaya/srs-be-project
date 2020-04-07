@@ -29,6 +29,7 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
 
   @override
   Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
@@ -48,7 +49,7 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
                           getImage();
                         },
                         label: Text('Select Image'),
-                        icon: Icon(Icons.account_circle),
+                        icon: Icon(Icons.image),
                       )
                     : Image.file(ImageFile),
               ),
@@ -61,7 +62,7 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
               width: MediaQuery.of(context).size.width,
               child: TextField(
                 obscureText: true,
-                cursorColor: Colors.teal,
+                cursorColor: Colors.blueGrey,
                 decoration: InputDecoration(
                   hintText: "Your Secret Key",
                   border: OutlineInputBorder(
@@ -77,19 +78,23 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 12,
-        onPressed: () {
-          if (ImageFile != null && password.text.isNotEmpty) {
-            print("ok");
-            decodeCall();
-          } else {
-            print("COMPLETE ALL DATA");
-          }
-        },
-        label: Text('Decode'),
-        icon: Icon(Icons.account_circle),
-      ),
+      floatingActionButton: showFab
+          ? FloatingActionButton.extended(
+              heroTag: 12,
+              onPressed: () {
+                if (ImageFile != null && password.text.isNotEmpty) {
+                  print("ok");
+                  decodeCall();
+                } else {
+                  print("COMPLETE ALL DATA");
+                  Toast.show("Complete All The Inputs", context,
+                      duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                }
+              },
+              label: Text('Decode Text'),
+              icon: Icon(Icons.lock_open),
+            )
+          : null,
     );
   }
 
@@ -110,11 +115,12 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
         print(" in LINK ");
         msg = response.data['encoded_data'];
         Navigator.of(context).pop();
+        Navigator.of(context).pop();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => DecodedTEXT()),
         );
-        Toast.show("Succsefull", context,
+        Toast.show("Succseful", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
 
@@ -124,7 +130,7 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
     } catch (e) {
-      Toast.show("Something went Wrong Opps Please Try Again", context,
+      Toast.show("Something went Wrong Please Try Again", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       Navigator.of(context).pop();
       print(e);
@@ -139,7 +145,10 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Please Wait while we Decode your data"),
+          title: new Text(
+            "Please Wait While We Decode Your Text",
+            textAlign: TextAlign.center,
+          ),
           content: Wrap(
             children: <Widget>[
               Center(

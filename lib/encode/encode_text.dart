@@ -44,27 +44,28 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
               options: Options(contentType: Headers.formUrlEncodedContentType));
       print(response);
       Navigator.of(context).pop();
+      Navigator.of(context).pop();
       imglink = response.data['secret_image_link'];
       endeString = "Encoded Image";
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Encoded()));
-      Toast.show("Succsefull", context,
+      Toast.show("Succseful", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     } catch (e) {
       coverImgB64 = null;
       coverImage = null;
       password.text = null;
       message.text = null;
-      Toast.show("Something went Wrong Opps Please Try Again", context,
+      Toast.show("Something went Wrong Please Try Again", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       Navigator.of(context).pop();
-
       print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
@@ -83,8 +84,8 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
                         onPressed: () {
                           getImage("c");
                         },
-                        label: Text('cover img'),
-                        icon: Icon(Icons.account_circle),
+                        label: Text('Cover Image'),
+                        icon: Icon(Icons.image),
                       )
                     : Image.file(coverImage),
               ),
@@ -100,7 +101,7 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
                   obscureText: false,
                   maxLines: 10,
                   minLines: 1,
-                  cursorColor: Colors.teal,
+                  cursorColor: Colors.blueGrey,
                   decoration: InputDecoration(
                     hintText: "Your Message",
                     border: OutlineInputBorder(
@@ -119,7 +120,7 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
               width: MediaQuery.of(context).size.width,
               child: TextField(
                 obscureText: true,
-                cursorColor: Colors.teal,
+                cursorColor: Colors.blueGrey,
                 decoration: InputDecoration(
                   hintText: "Your Secret Key",
                   border: OutlineInputBorder(
@@ -135,22 +136,24 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 4,
-        onPressed: () {
-          if (coverImage != null &&
-              password.text.isNotEmpty &&
-              message.text.isNotEmpty) {
-            print("ok");
-            encodeCall();
-          } else {
-            Toast.show("Complete all the Inputs", context,
-                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-          }
-        },
-        label: Text('Enocde'),
-        icon: Icon(Icons.account_circle),
-      ),
+      floatingActionButton: showFab
+          ? FloatingActionButton.extended(
+              heroTag: 4,
+              onPressed: () {
+                if (coverImage != null &&
+                    password.text.isNotEmpty &&
+                    message.text.isNotEmpty) {
+                  print("ok");
+                  encodeCall();
+                } else {
+                  Toast.show("Complete All The Inputs", context,
+                      duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                }
+              },
+              label: Text('Enocde Text'),
+              icon: Icon(Icons.lock_outline),
+            )
+          : null,
     );
   }
 
@@ -162,15 +165,14 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Please Wait while we encode your data"),
+          title: new Text(
+            "Please Wait while we Encode Your Text",
+            textAlign: TextAlign.center,
+          ),
           content: Wrap(
             children: <Widget>[
               Center(
-                child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(
-                    Colors.blue[300],
-                  ),
-                ),
+                child: CircularProgressIndicator(),
               )
             ],
           ),

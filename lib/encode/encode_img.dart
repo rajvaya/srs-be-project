@@ -62,11 +62,12 @@ class _EncodeIMGState extends State<EncodeIMG> {
               options: Options(contentType: Headers.formUrlEncodedContentType));
       print(response);
       Navigator.of(context).pop();
+      Navigator.of(context).pop();
       imglink = response.data['secret_image_link'];
       endeString = "Encoded Image";
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Encoded()));
-      Toast.show("Succsefull", context,
+      Toast.show("Succseful", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     } catch (e) {
       coverImgB64 = null;
@@ -88,7 +89,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        title: Text('Encode IMG'),
+        title: Text('Encode Image'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -103,8 +104,8 @@ class _EncodeIMGState extends State<EncodeIMG> {
                         onPressed: () {
                           getImage("c");
                         },
-                        label: Text('cover img'),
-                        icon: Icon(Icons.account_circle),
+                        label: Text('Cover Image'),
+                        icon: Icon(Icons.image),
                       )
                     : Image.file(coverImage),
               ),
@@ -122,8 +123,8 @@ class _EncodeIMGState extends State<EncodeIMG> {
                         onPressed: () {
                           getImage("s");
                         },
-                        label: Text('Secret Img'),
-                        icon: Icon(Icons.account_circle),
+                        label: Text('Secret Image'),
+                        icon: Icon(Icons.image),
                       )
                     : Image.file(secretImage),
               ),
@@ -133,10 +134,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
               width: MediaQuery.of(context).size.width,
               child: TextField(
                 obscureText: true,
-                cursorColor: Colors.teal,
-                onSubmitted: (String s) {
-                  onSubmit();
-                },
+                cursorColor: Colors.blueGrey,
                 decoration: InputDecoration(
                   hintText: "Your Secret Key",
                   border: OutlineInputBorder(
@@ -161,8 +159,8 @@ class _EncodeIMGState extends State<EncodeIMG> {
               onPressed: () {
                 onSubmit();
               },
-              label: Text('Enocde'),
-              icon: Icon(Icons.account_circle),
+              label: Text('Enocde Image'),
+              icon: Icon(Icons.lock_outline),
             )
           : null,
     );
@@ -171,12 +169,16 @@ class _EncodeIMGState extends State<EncodeIMG> {
   void _showDialog() {
     // flutter defined function
     showDialog(
-      barrierDismissible: true,
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Please Wait while we encode your data"),
+          title: Center(
+              child: new Text(
+            "Please Wait While We Encode Your Image",
+            textAlign: TextAlign.center,
+          )),
           content: Wrap(
             children: <Widget>[
               Center(

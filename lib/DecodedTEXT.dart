@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
@@ -17,10 +18,18 @@ class _DecodedTEXTState extends State<DecodedTEXT> {
         title: Text("Your Secret Message"),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height * 0.5,
-            child: Text(msg),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: Text(
+                msg,
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
         ],
       ),

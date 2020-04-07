@@ -29,9 +29,8 @@ class _ListOfEncodedState extends State<ListOfEncoded> {
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
       print(response.data.toString());
-      if (response.data.toString().contains("No encoded images")) {
+      if (response.data.toString().contains("No Encoded images")) {
         print("in no img");
-
         setState(() {
           noimg = true;
           isLoading = false;
@@ -51,10 +50,16 @@ class _ListOfEncodedState extends State<ListOfEncoded> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('List of Encode'),
+          title: Text('Encoded Images'),
         ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())

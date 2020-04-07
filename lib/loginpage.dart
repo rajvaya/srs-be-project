@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   _signInWithGoogle() async {
+    isLoading = true;
+    setState(() {});
     try {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -43,7 +45,9 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } catch (e) {
+      isLoading = false;
       print(e);
+      setState(() {});
     }
   }
 
@@ -56,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
   chckuser() async {
     var user = await _auth.currentUser();
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 3));
     if (user != null) {
       setState(() {
         fbuser = user;
@@ -74,23 +78,48 @@ class _LoginPageState extends State<LoginPage> {
         isLoading = false;
       });
     }
-    // _auth.signOut();
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? Container(
-            color: Colors.white,
-            child: Center(child: CircularProgressIndicator()))
-        : Scaffold(
-            body: Center(
-              child: FloatingActionButton.extended(
-                onPressed: _signInWithGoogle,
-                label: Text('Login With Google'),
-                icon: FaIcon(FontAwesomeIcons.google),
-              ),
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset(
+            "assets/avatar.png",
+            height: MediaQuery.of(context).size.height * 0.15,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'SPD',
+              style: TextStyle(
+                  color: Colors.blueGrey[600],
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500),
             ),
-          );
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
+          ),
+          !isLoading
+              ? Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    child: FloatingActionButton.extended(
+                      onPressed: _signInWithGoogle,
+                      label: Text(' Login With Google'),
+                      icon: FaIcon(FontAwesomeIcons.google),
+                    ),
+                  ),
+                )
+              : Container(
+                  color: Colors.white,
+                  child: Center(child: CircularProgressIndicator())),
+        ],
+      ),
+    );
   }
 }

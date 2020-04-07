@@ -4,3 +4,4 @@ FirebaseUser fbuser;
 String imglink;
 String endeString = " ";
 String msg = " ";
+String Operation = " ";

@@ -28,10 +28,11 @@ class _DecodeIMGState extends State<DecodeIMG> {
 
   @override
   Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        title: Text('Decode img'),
+        title: Text('Decode Image'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -47,7 +48,7 @@ class _DecodeIMGState extends State<DecodeIMG> {
                           getImage();
                         },
                         label: Text('Select Image'),
-                        icon: Icon(Icons.account_circle),
+                        icon: Icon(Icons.image),
                       )
                     : Image.file(ImageFile),
               ),
@@ -60,7 +61,7 @@ class _DecodeIMGState extends State<DecodeIMG> {
               width: MediaQuery.of(context).size.width,
               child: TextField(
                 obscureText: true,
-                cursorColor: Colors.teal,
+                cursorColor: Colors.blueGrey,
                 decoration: InputDecoration(
                   hintText: "Your Secret Key",
                   border: OutlineInputBorder(
@@ -76,19 +77,22 @@ class _DecodeIMGState extends State<DecodeIMG> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 4,
-        onPressed: () {
-          if (ImageFile != null && password.text.isNotEmpty) {
-            print("ok");
-            decodeCall();
-          } else {
-            print("COMPLETE ALL DATA");
-          }
-        },
-        label: Text('Decode'),
-        icon: Icon(Icons.account_circle),
-      ),
+      floatingActionButton: showFab
+          ? FloatingActionButton.extended(
+              heroTag: 4,
+              onPressed: () {
+                if (ImageFile != null && password.text.isNotEmpty) {
+                  print("ok");
+                  decodeCall();
+                } else {
+                  Toast.show("Complete All The Inputs", context,
+                      duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                }
+              },
+              label: Text('Decode Image'),
+              icon: Icon(Icons.lock_open),
+            )
+          : null,
     );
   }
 
@@ -109,11 +113,12 @@ class _DecodeIMGState extends State<DecodeIMG> {
         imglink = response.data['link'];
         endeString = "Decoded Image";
         Navigator.of(context).pop();
+        Navigator.of(context).pop();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Encoded()),
         );
-        Toast.show("Succsefull", context,
+        Toast.show("Succseful", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
 
@@ -138,7 +143,10 @@ class _DecodeIMGState extends State<DecodeIMG> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Please Wait while we Decode your data"),
+          title: new Text(
+            "Please Wait while We Decode your Image",
+            textAlign: TextAlign.center,
+          ),
           content: Wrap(
             children: <Widget>[
               Center(
