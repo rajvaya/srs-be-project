@@ -15,7 +15,9 @@ class DecodeTEXT extends StatefulWidget {
 }
 
 class _DecodeTEXTState extends State<DecodeTEXT> {
+  // ignore: non_constant_identifier_names
   File ImageFile;
+  // ignore: non_constant_identifier_names
   String ImgB64;
   TextEditingController password = TextEditingController();
 

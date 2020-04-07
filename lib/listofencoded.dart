@@ -17,6 +17,7 @@ class _ListOfEncodedState extends State<ListOfEncoded> {
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     getListofImgs();
   }
 
