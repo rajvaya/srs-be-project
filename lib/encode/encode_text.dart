@@ -34,7 +34,7 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
     _showDialog();
     try {
       Response response =
-          await Dio().post("https://awss3uploader.herokuapp.com/encode",
+          await Dio().post("https://srs-flask-backend.herokuapp.com/encode",
               data: {
                 "cover_image": coverImgB64.toString(),
                 "data_to_be_encoded": message.text.toString(),
@@ -67,7 +67,7 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
   Widget build(BuildContext context) {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('Encode Text'),
       ),
@@ -150,7 +150,7 @@ class _EncodeTEXTState extends State<EncodeTEXT> {
                       duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                 }
               },
-              label: Text('Enocde Text'),
+              label: Text('Encode Text'),
               icon: Icon(Icons.lock_outline),
             )
           : null,

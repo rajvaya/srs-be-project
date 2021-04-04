@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String email = "";
+  //String email = "";
   String url;
   bool isLoading = true;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       final FirebaseUser user =
           (await _auth.signInWithCredential(credential)).user;
-      print("LOGGDIN AS : " + user.email.toString());
+      // print("LOGGDIN AS : " + user.email.toString());
       fbuser = user;
       var response = await Dio().post(
           "https://us-central1-spd-app-7afb5.cloudfunctions.net/addUID",
@@ -93,9 +93,9 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'SPD',
+              'SRS APP',
               style: TextStyle(
-                  color: Colors.blueGrey[600],
+                  color: Colors.blueGrey,
                   fontSize: 24,
                   fontWeight: FontWeight.w500),
             ),

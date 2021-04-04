@@ -14,6 +14,10 @@ class _ListOfEncodedState extends State<ListOfEncoded> {
   bool isLoading = true;
   bool noimg = false;
 
+
+
+
+
   @override
   void initState() {
     // TODO: implement initState

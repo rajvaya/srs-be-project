@@ -51,7 +51,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
     _showDialog();
     try {
       Response response =
-          await Dio().post("https://awss3uploader.herokuapp.com/encode",
+          await Dio().post("https://srs-flask-backend.herokuapp.com/encode",
               data: {
                 "cover_image": coverImgB64.toString(),
                 "data_to_be_encoded": secretImgB64.toString(),
@@ -86,7 +86,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
   Widget build(BuildContext context) {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('Encode Image'),
       ),
@@ -158,7 +158,7 @@ class _EncodeIMGState extends State<EncodeIMG> {
               onPressed: () {
                 onSubmit();
               },
-              label: Text('Enocde Image'),
+              label: Text('Encode Image'),
               icon: Icon(Icons.lock_outline),
             )
           : null,

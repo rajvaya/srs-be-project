@@ -10,9 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SPD',
+      title: 'SRS APP',
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        primarySwatch: Colors.indigo,
+        accentColor: Colors.indigoAccent,
         scaffoldBackgroundColor: Colors.white,
         canvasColor: Colors.blueGrey,
       ),

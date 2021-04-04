@@ -32,7 +32,7 @@ class _DecodeIMGState extends State<DecodeIMG> {
   Widget build(BuildContext context) {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('Decode Image'),
       ),
@@ -103,7 +103,7 @@ class _DecodeIMGState extends State<DecodeIMG> {
     _showDialog();
     try {
       Response response =
-          await Dio().post("https://awss3uploader.herokuapp.com/decodeImage",
+          await Dio().post("https://srs-flask-backend.herokuapp.com/decodeImage",
               data: {
                 "secret_image": ImgB64.toString(),
                 "pwd": password.text,

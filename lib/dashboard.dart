@@ -33,7 +33,7 @@ class _DashBoardState extends State<DashBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SPD Dashboard'),
+        title: Text('SRS Dashboard'),
         centerTitle: true,
         actions: <Widget>[
           Center(

@@ -33,7 +33,7 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
   Widget build(BuildContext context) {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('Decode Text'),
       ),
@@ -105,7 +105,7 @@ class _DecodeTEXTState extends State<DecodeTEXT> {
     _showDialog();
     try {
       Response response =
-          await Dio().post("https://awss3uploader.herokuapp.com/decodeText",
+          await Dio().post("https://srs-flask-backend.herokuapp.com/decodeText",
               data: {
                 "secret_image": ImgB64.toString(),
                 "pwd": password.text,
